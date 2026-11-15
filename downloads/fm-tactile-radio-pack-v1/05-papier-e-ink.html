@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Widget Radio FM — 05 · Papier E-Ink & Encre</title>
+  <style>
+    /* Styles de centrage pour l'aperçu autonome (à retirer lors de l'intégration sur votre site) */
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      background: #23211e;
+    }
+
+    /* ========================================================================
+       STYLES DU WIDGET RADIO (CORE + 05 · PAPIER E-INK & ENCRE)
+    ========================================================================= */
+@property --lvl { syntax: "<number>"; inherits: false; initial-value: 0.2; }
+
+.radio-bg {
+  --eq-dur: 800ms;
+  --eq-low: 0.4;
+  --eq-ease: ease-in-out;
+  --tuner-dur: 700ms;
+  --tuner-ease: cubic-bezier(0.34, 1.36, 0.64, 1);
+  --pill-dur: 250ms;
+  --pill-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --text-swap-dur: 150ms;
+  --text-swap-translate-y: 4px;
+  --text-swap-blur: 2px;
+  --text-swap-ease: ease-in-out;
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --press-dur: 150ms;
+  --press-scale: 0.99;
+  --play-pause-dur: 200ms;
+  --play-pause-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  width: 300px;
+  height: 300px;
+  padding: 10px;
+  border-radius: 32px;
+  display: grid;
+  place-items: center;
+}
+
+:where(.radio-bg), :where(.radio-bg) *, :where(.radio-bg) *::before, :where(.radio-bg) *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:where(.radio-bg) button {
+  font: inherit;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.radio-bg .radio {
+  width: 280px;
+  height: 280px;
+  padding: 16px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.radio-bg .head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0 0 8px;
+}
+
+.radio-bg .meta { flex: 1; min-width: 0; }
+
+.radio-bg .name {
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.radio-bg .freq {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+
+.radio-bg .t-text-swap {
+  display: inline-block;
+  transform: translateY(0);
+  filter: blur(0);
+  opacity: 1;
+  transition: transform var(--text-swap-dur) var(--text-swap-ease), filter var(--text-swap-dur) var(--text-swap-ease), opacity var(--text-swap-dur) var(--text-swap-ease);
+}
+.radio-bg .t-text-swap.is-soft { --text-swap-translate-y: 0px; }
+.radio-bg .t-text-swap.is-exit { transform: translateY(calc(var(--text-swap-translate-y) * -1)); filter: blur(var(--text-swap-blur)); opacity: 0; }
+.radio-bg .t-text-swap.is-enter-start { transform: translateY(var(--text-swap-translate-y)); filter: blur(var(--text-swap-blur)); opacity: 0; transition: none; }
+
+.radio-bg .play {
+  --press-scale: 0.94;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: transform var(--press-dur) var(--ease-smooth-out), box-shadow var(--press-dur) var(--ease-smooth-out), color var(--press-dur) var(--ease-smooth-out), background-color var(--press-dur) var(--ease-smooth-out);
+}
+
+.radio-bg .play.is-loading { animation: radio-buffer 900ms ease-in-out infinite alternate; }
+@keyframes radio-buffer { from { opacity: 0.55; } to { opacity: 1; } }
+
+.radio-bg .play .t-play-pause { width: 24px; height: 24px; }
+.radio-bg .play:is(:active, .is-pressed) { transform: scale(var(--press-scale)); }
+
+.radio-bg .list { position: relative; display: flex; flex-direction: column; gap: 0; }
+
+.radio-bg .pill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 40px;
+  border-radius: 12px;
+  transform: translateY(0);
+  transition: transform var(--pill-dur) var(--pill-ease);
+}
+.radio-bg .pill.no-anim { transition: none; }
+
+.radio-bg .tuner {
+  position: relative;
+  height: 32px;
+  margin: 0 8px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.radio-bg .tuner .bar {
+  --lvl: 0.2;
+  flex: none;
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  transform-origin: bottom;
+  transform: scaleY(var(--lvl));
+  transition: --lvl var(--tuner-dur) var(--tuner-ease);
+}
+
+.radio-bg .tuner[data-playing="true"] .bar {
+  animation: radio-eq var(--bar-dur, 800ms) var(--eq-ease) infinite alternate;
+  animation-delay: var(--bar-delay, 0ms);
+}
+
+@keyframes radio-eq {
+  from { transform: scaleY(calc(var(--lvl) * var(--eq-low))); }
+  to { transform: scaleY(var(--lvl)); }
+}
+
+.radio-bg .tuner .needle {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 2px;
+  transform: translateX(0);
+  transition: transform var(--tuner-dur) var(--tuner-ease);
+}
+.radio-bg .tuner .needle.no-anim { transition: none; }
+
+.radio-bg .row {
+  --press-scale: 0.99;
+  position: relative;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  transition: transform var(--press-dur) var(--ease-smooth-out), color var(--press-dur) var(--ease-smooth-out);
+}
+.radio-bg .row .f { font-variant-numeric: tabular-nums; transition: color var(--press-dur) var(--ease-smooth-out); }
+.radio-bg .row:is(:active, .is-pressed) { transform: scale(var(--press-scale)); }
+
+.radio-bg .t-play-pause { display: inline-grid; place-items: center; width: 24px; height: 24px; flex: none; }
+.radio-bg .t-play-pause svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.radio-bg .t-play-pause path { fill: currentColor; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; vector-effect: non-scaling-stroke; transition: d var(--play-pause-dur) var(--play-pause-ease), opacity var(--play-pause-dur) var(--play-pause-ease); }
+.radio-bg .t-play-pause .t-pp-pl, .radio-bg .t-play-pause .t-pp-pr, .radio-bg .t-play-pause[data-state="pause"] .t-pp-l, .radio-bg .t-play-pause[data-state="pause"] .t-pp-r { opacity: 0; }
+.radio-bg .t-play-pause[data-state="pause"] .t-pp-pl, .radio-bg .t-play-pause[data-state="pause"] .t-pp-pr { opacity: 1; }
+@supports (d: path("M0 0")) {
+  .radio-bg .t-play-pause .t-pp-pl, .radio-bg .t-play-pause .t-pp-pr { display: none; }
+  .radio-bg .t-play-pause .t-pp-l { d: path("M6.5 4.5 13 8.25 13 15.75 6.5 19.5Z"); }
+  .radio-bg .t-play-pause .t-pp-r { d: path("M13 8.25 19.5 12 19.5 12 13 15.75Z"); }
+  .radio-bg .t-play-pause[data-state="pause"] .t-pp-l { opacity: 1; d: path("M6.5 5 10 5 10 19 6.5 19Z"); }
+  .radio-bg .t-play-pause[data-state="pause"] .t-pp-r { opacity: 1; d: path("M14 5 17.5 5 17.5 19 14 19Z"); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .radio-bg .tuner .bar, .radio-bg .tuner .needle, .radio-bg .t-text-swap,
+  .radio-bg .pill, .radio-bg .row, .radio-bg .play, .radio-bg .t-play-pause path {
+    animation: none !important;
+    transition: none !important;
+  }
+  .radio-bg .row:is(:active, .is-pressed), .radio-bg .play:is(:active, .is-pressed) { transform: none; }
+}
+
+
+/* THÈME 05 : PAPIER E-INK & ENCRE */
+.theme-e-ink {
+  background: #eae5d9;
+  box-shadow: 0 0 0 1.5px #22201d, 0 18px 40px rgba(0, 0, 0, 0.45);
+  color: #1c1b18;
+}
+.theme-e-ink .radio { background: #f5f2eb; box-shadow: inset 0 0 0 1px rgba(28, 27, 24, 0.18); }
+.theme-e-ink .name { color: #1c1b18; }
+.theme-e-ink .freq { color: #c83e2b; }
+.theme-e-ink .play { color: #1c1b18; background: #eae5d9; box-shadow: inset 0 0 0 1.5px #1c1b18; }
+@media (hover: hover) and (pointer: fine) { .theme-e-ink .play:hover { background: #1c1b18; color: #f5f2eb; } }
+.theme-e-ink .pill { background: #ffffff; box-shadow: inset 0 0 0 1.5px #1c1b18; }
+.theme-e-ink .tuner { background: #eae5d9; box-shadow: inset 0 0 0 1px rgba(28, 27, 24, 0.25); }
+.theme-e-ink .tuner .bar { background: rgba(28, 27, 24, 0.22); }
+.theme-e-ink .tuner[data-playing="true"] .bar { background: #1c1b18; }
+.theme-e-ink .tuner .needle { background: #c83e2b; width: 2.5px; }
+.theme-e-ink .row { color: #635f57; }
+.theme-e-ink .row[aria-checked="true"] { color: #1c1b18; font-weight: 600; }
+.theme-e-ink .row .f { color: #7d786e; }
+.theme-e-ink .row[aria-checked="true"] .f { color: #c83e2b; font-weight: 700; }
+@media (hover: hover) and (pointer: fine) { .theme-e-ink .row:hover { color: #1c1b18; } }
+.theme-e-ink button:focus-visible { outline: 2px solid #c83e2b; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+
+<!-- DÉBUT DU WIDGET RADIO (05 · Papier E-Ink & Encre) -->
+<div class="radio-bg theme-e-ink">
+  <div class="radio" role="group" aria-label="Radio 05 · Papier E-Ink & Encre">
+    <div class="head">
+      <div class="meta">
+        <h2 class="name"><span class="t-text-swap is-soft" data-name>Lofi Club</span></h2>
+        <p class="freq"><span class="t-text-swap is-soft" data-freq>98.4 FM</span></p>
+      </div>
+      <button type="button" class="play" data-play aria-label="Lecture">
+        <span class="t-play-pause" data-state="play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path class="t-pp-l" d="M6.5 4.5 13 8.25 13 15.75 6.5 19.5Z"/>
+            <path class="t-pp-r" d="M13 8.25 19.5 12 19.5 12 13 15.75Z"/>
+            <path class="t-pp-pl" d="M6.5 5 10 5 10 19 6.5 19Z"/>
+            <path class="t-pp-pr" d="M14 5 17.5 5 17.5 19 14 19Z"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    <div class="tuner" data-tuner aria-hidden="true">
+      <span class="needle" data-needle></span>
+    </div>
+
+    <div class="list" role="radiogroup" aria-label="Stations">
+      <span class="pill" data-pill aria-hidden="true"></span>
+      <button type="button" class="row" role="radio" aria-checked="true" data-name="Lofi Club" data-freq="98.4 FM" data-stream="https://ice1.somafm.com/groovesalad-128-mp3">
+        <span>Lofi Club</span><span class="f">98.4</span>
+      </button>
+      <button type="button" class="row" role="radio" aria-checked="false" data-name="Nova Jazz" data-freq="101.7 FM" data-stream="https://ice1.somafm.com/sonicuniverse-128-mp3">
+        <span>Nova Jazz</span><span class="f">101.7</span>
+      </button>
+      <button type="button" class="row" role="radio" aria-checked="false" data-name="Deep Pulse" data-freq="104.2 FM" data-stream="https://ice1.somafm.com/deepspaceone-128-mp3">
+        <span>Deep Pulse</span><span class="f">104.2</span>
+      </button>
+    </div>
+
+    <audio preload="none" data-audio></audio>
+  </div>
+</div>
+<!-- FIN DU WIDGET RADIO -->
+
+  <script>
+(function () {
+  if (window.__radioWidgetInit) return;
+  window.__radioWidgetInit = true;
+
+  var widgets = Array.prototype.slice.call(document.querySelectorAll('.radio'));
+  var instances = [];
+
+  widgets.forEach(function (root) {
+    var rows = Array.prototype.slice.call(root.querySelectorAll('.row'));
+    var pill = root.querySelector('[data-pill]');
+    var play = root.querySelector('[data-play]');
+    var icon = root.querySelector('.t-play-pause');
+    var nameEl = root.querySelector('[data-name]');
+    var freqEl = root.querySelector('[data-freq]');
+    var tuner = root.querySelector('[data-tuner]');
+    var needle = root.querySelector('[data-needle]');
+    var audio = root.querySelector('[data-audio]');
+    var swapMs = parseFloat(getComputedStyle(root).getPropertyValue('--text-swap-dur')) || 150;
+
+    var current = 0, playing = false;
+    var bars = [], N = 30;
+
+    for (var b = 0; b < N; b++) {
+      var s = document.createElement('span');
+      s.className = 'bar';
+      s.style.setProperty('--bar-dur', (500 + (b * 53) % 400) + 'ms');
+      s.style.setProperty('--bar-delay', (-((b * 137) % 800)) + 'ms');
+      tuner.insertBefore(s, needle);
+      bars.push(s);
+    }
+
+    function tune(i, instant) {
+      var f = parseFloat(rows[i].dataset.freq);
+      var p = Math.max(0, Math.min(1, (f - 96) / 12));
+      bars.forEach(function (bar, k) {
+        var prox = Math.max(0, 1 - Math.abs((k + 0.5) / N - p) / 0.25);
+        bar.style.setProperty('--lvl', (0.18 + 0.82 * prox * prox).toFixed(3));
+      });
+      if (instant) needle.classList.add('no-anim');
+      needle.style.transform = 'translateX(' + (p * tuner.offsetWidth) + 'px)';
+      if (instant) { void needle.offsetHeight; needle.classList.remove('no-anim'); }
+    }
+
+    function place(i, instant) {
+      if (instant) pill.classList.add('no-anim');
+      pill.style.transform = 'translateY(' + (rows[i].offsetTop) + 'px)';
+      if (instant) { void pill.offsetHeight; pill.classList.remove('no-anim'); }
+    }
+
+    function swap(el, next) {
+      if (el.textContent === next) return;
+      el.classList.add('is-exit');
+      setTimeout(function () {
+        el.textContent = next;
+        el.classList.remove('is-exit');
+        el.classList.add('is-enter-start');
+        void el.offsetHeight;
+        el.classList.remove('is-enter-start');
+      }, swapMs);
+    }
+
+    function syncUI(v) {
+      playing = v;
+      tuner.setAttribute('data-playing', v ? 'true' : 'false');
+      icon.setAttribute('data-state', v ? 'pause' : 'play');
+      play.setAttribute('aria-label', v ? 'Pause' : 'Lecture');
+      if (!v) play.classList.remove('is-loading');
+    }
+
+    function loadAndPlay(index) {
+      var url = rows[index].dataset.stream;
+      if (!url) return;
+
+      instances.forEach(function (inst) {
+        if (inst !== api) inst.pause();
+      });
+
+      play.classList.add('is-loading');
+      syncUI(true);
+
+      if (audio.src !== url) {
+        audio.src = url;
+      }
+      var promise = audio.play();
+      if (promise !== undefined) {
+        promise.then(function () {
+          play.classList.remove('is-loading');
+        }).catch(function () {
+          syncUI(false);
+        });
+      }
+    }
+
+    function stopAudio() {
+      syncUI(false);
+      audio.pause();
+      audio.removeAttribute('src');
+      audio.load();
+    }
+
+    function setPlaying(v) {
+      if (v) {
+        loadAndPlay(current);
+      } else {
+        stopAudio();
+      }
+    }
+
+    function select(i) {
+      if (i === current) {
+        if (!playing) setPlaying(true);
+        return;
+      }
+      current = i;
+      rows.forEach(function (r, k) {
+        r.setAttribute('aria-checked', k === i ? 'true' : 'false');
+        r.tabIndex = k === i ? 0 : -1;
+      });
+      place(i, false);
+      tune(i, false);
+      swap(nameEl, rows[i].dataset.name);
+      swap(freqEl, rows[i].dataset.freq);
+      loadAndPlay(i);
+    }
+
+    audio.addEventListener('playing', function () { play.classList.remove('is-loading'); });
+    audio.addEventListener('waiting', function () { if (playing) play.classList.add('is-loading'); });
+    audio.addEventListener('error', function () { syncUI(false); });
+
+    rows.forEach(function (r, k) {
+      r.tabIndex = k === 0 ? 0 : -1;
+      r.addEventListener('click', function () { select(k); });
+      r.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        var n = (k + d + rows.length) % rows.length;
+        select(n);
+        rows[n].focus();
+      });
+    });
+
+    play.addEventListener('click', function () { setPlaying(!playing); });
+    place(0, true);
+    tune(0, true);
+    window.addEventListener('load', function () { place(current, true); tune(current, true); });
+    window.addEventListener('resize', function () { place(current, true); tune(current, true); });
+
+    var api = { pause: stopAudio };
+    instances.push(api);
+  });
+
+  // Retour tactile mobile
+  var min = 150;
+  document.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'mouse') return;
+    var el = e.target && e.target.closest && e.target.closest('.radio-bg button');
+    if (!el || el.disabled) return;
+    var t0 = performance.now();
+    clearTimeout(el._tPress);
+    el.classList.add('is-pressed');
+    function up() {
+      document.removeEventListener('pointerup', up, true);
+      document.removeEventListener('pointercancel', up, true);
+      el._tPress = setTimeout(function () { el.classList.remove('is-pressed'); }, Math.max(0, min - (performance.now() - t0)));
+    }
+    document.addEventListener('pointerup', up, true);
+    document.addEventListener('pointercancel', up, true);
+  }, { passive: true });
+})();
+
+  </script>
+</body>
+</html>

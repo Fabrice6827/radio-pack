@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FM Tactile UI — Pack de 6 Widgets Radio Interactifs (HTML/CSS/JS)</title>
+  <style>
+    :root {
+      --bg-page: #090b10;
+      --bg-surface: #11151f;
+      --bg-surface-hover: #161b28;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-gold: #d4af37;
+      --accent-cyan: #38bdf8;
+      --accent-green: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      background-image:
+        radial-gradient(ellipse 80% 45% at 50% -10%, rgba(212, 175, 55, 0.14), transparent),
+        radial-gradient(ellipse 60% 40% at 85% 20%, rgba(56, 189, 248, 0.07), transparent);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    /* Navigation commerciale */
+    .topbar {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 24px 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      box-shadow: 0 0 12px var(--accent-gold);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-ghost {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 10px;
+      transition: color 180ms ease, background-color 180ms ease;
+    }
+
+    .btn-ghost:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    @media (max-width: 640px) {
+      .btn-ghost { display: none; }
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #ecc965 0%, #c59b27 100%);
+      color: #090b10;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 11px 20px;
+      border-radius: 12px;
+      text-decoration: none;
+      border: 0;
+      cursor: pointer;
+      box-shadow: 0 6px 22px rgba(212, 175, 55, 0.28);
+      transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 28px rgba(212, 175, 55, 0.42);
+      filter: brightness(1.04);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 14px;
+      padding: 11px 20px;
+      border-radius: 12px;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      transition: background-color 180ms ease, border-color 180ms ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.11);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 64px 24px 48px;
+      text-align: center;
+    }
+
+    .pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #f3d479;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 54px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      margin-bottom: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 630px;
+      margin: 0 auto 28px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .specs-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .spec-chip {
+      font-size: 12px;
+      font-weight: 500;
+      color: #cbd5e1;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    /* Banc d'essai interactif des 6 modèles */
+    .showcase-section {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 16px 24px 72px;
+    }
+
+    .section-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .section-bar h2 {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .live-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 10px var(--accent-green);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 28px;
+      padding: 26px 20px 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1), border-color 240ms ease, background-color 240ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-strong);
+      background: var(--bg-surface-hover);
+    }
+
+    .stage {
+      width: 100%;
+      padding: 22px 0;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    .stage.stage-light {
+      background: radial-gradient(circle at 50% 50%, #2a2f3a 0%, #171a21 100%);
+    }
+
+    .card-footer {
+      width: 100%;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-meta h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .card-meta p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .included-badge {
+      flex: none;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: #f3d479;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.26);
+      padding: 5px 10px;
+      border-radius: 999px;
+    }
+
+    /* Section Contenu du Pack & Bloc Tarifaire */
+    .offer-section {
+      max-width: 1140px;
+      margin: 0 auto 72px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 900px) {
+      .offer-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .zip-card, .pricing-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 28px;
+      padding: 36px;
+    }
+
+    @media (max-width: 600px) {
+      .zip-card, .pricing-card {
+        padding: 24px;
+      }
+    }
+
+    .zip-card h2 {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .zip-card > p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .zip-tree {
+      background: #07090e;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 16px;
+      padding: 18px 20px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12.5px;
+      line-height: 1.75;
+      color: #cbd5e1;
+      margin-bottom: 24px;
+    }
+
+    .zip-tree .folder { color: #f3d479; font-weight: 600; }
+    .zip-tree .file { color: #38bdf8; }
+    .zip-tree .note { color: #64748b; }
+
+    .features-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 16px;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+
+    @media (max-width: 560px) {
+      .features-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .features-list li::before {
+      content: "✓";
+      color: var(--accent-green);
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    /* Carte Tarifaire */
+    .pricing-card {
+      background: linear-gradient(165deg, #161c2a 0%, #0e121b 100%);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 40px rgba(212, 175, 55, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pricing-badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #090b10;
+      background: #ecc965;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+
+    .pricing-card h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .pricing-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .price-amount {
+      font-size: 46px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .price-tax {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .pricing-perks {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      font-size: 13.5px;
+      color: #e2e8f0;
+      margin-bottom: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .pricing-perks li::before {
+      content: "✦";
+      color: var(--accent-gold);
+      margin-right: 10px;
+    }
+
+    .btn-buy-full {
+      width: 100%;
+      padding: 15px 20px;
+      font-size: 15px;
+      border-radius: 14px;
+    }
+
+    .guarantee-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 12px;
+    }
+
+    /* FAQ rapide */
+    .faq-section {
+      max-width: 1140px;
+      margin: 0 auto 72px;
+      padding: 0 24px;
+    }
+
+    .faq-section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .faq-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 22px;
+    }
+
+    .faq-item h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .faq-item p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* Footer */
+    footer {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 28px 24px 48px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ========================================================================
+       STYLES DU COMPOSANT WIDGET RADIO (DÉMONSTRATION INTERACTIVE)
+    ========================================================================= */
+    @property --lvl { syntax: "<number>"; inherits: false; initial-value: 0.2; }
+
+    .radio-bg {
+      --eq-dur: 800ms;
+      --eq-low: 0.4;
+      --eq-ease: ease-in-out;
+      --tuner-dur: 700ms;
+      --tuner-ease: cubic-bezier(0.34, 1.36, 0.64, 1);
+      --pill-dur: 250ms;
+      --pill-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --text-swap-dur: 150ms;
+      --text-swap-translate-y: 4px;
+      --text-swap-blur: 2px;
+      --text-swap-ease: ease-in-out;
+      --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --press-dur: 150ms;
+      --press-scale: 0.99;
+      --play-pause-dur: 200ms;
+      --play-pause-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      width: 300px;
+      height: 300px;
+      padding: 10px;
+      border-radius: 32px;
+      display: grid;
+      place-items: center;
+    }
+
+    :where(.radio-bg), :where(.radio-bg) *, :where(.radio-bg) *::before, :where(.radio-bg) *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :where(.radio-bg) button {
+      font: inherit;
+      border: 0;
+      background: none;
+      color: inherit;
+      cursor: pointer;
+      text-align: left;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    .radio-bg .radio {
+      width: 280px;
+      height: 280px;
+      padding: 16px;
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .radio-bg .head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 0 0 8px;
+    }
+
+    .radio-bg .meta { flex: 1; min-width: 0; }
+
+    .radio-bg .name {
+      font-size: 28px;
+      line-height: 34px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .radio-bg .freq {
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-variant-numeric: tabular-nums;
+      margin-top: 2px;
+    }
+
+    .radio-bg .t-text-swap {
+      display: inline-block;
+      transform: translateY(0);
+      filter: blur(0);
+      opacity: 1;
+      transition: transform var(--text-swap-dur) var(--text-swap-ease), filter var(--text-swap-dur) var(--text-swap-ease), opacity var(--text-swap-dur) var(--text-swap-ease);
+    }
+    .radio-bg .t-text-swap.is-soft { --text-swap-translate-y: 0px; }
+    .radio-bg .t-text-swap.is-exit { transform: translateY(calc(var(--text-swap-translate-y) * -1)); filter: blur(var(--text-swap-blur)); opacity: 0; }
+    .radio-bg .t-text-swap.is-enter-start { transform: translateY(var(--text-swap-translate-y)); filter: blur(var(--text-swap-blur)); opacity: 0; transition: none; }
+
+    .radio-bg .play {
+      --press-scale: 0.94;
+      flex: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      transition: transform var(--press-dur) var(--ease-smooth-out), box-shadow var(--press-dur) var(--ease-smooth-out), color var(--press-dur) var(--ease-smooth-out), background-color var(--press-dur) var(--ease-smooth-out);
+    }
+
+    .radio-bg .play.is-loading { animation: radio-buffer 900ms ease-in-out infinite alternate; }
+    @keyframes radio-buffer { from { opacity: 0.55; } to { opacity: 1; } }
+
+    .radio-bg .play .t-play-pause { width: 24px; height: 24px; }
+    .radio-bg .play:is(:active, .is-pressed) { transform: scale(var(--press-scale)); }
+
+    .radio-bg .list { position: relative; display: flex; flex-direction: column; gap: 0; }
+
+    .radio-bg .pill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 40px;
+      border-radius: 12px;
+      transform: translateY(0);
+      transition: transform var(--pill-dur) var(--pill-ease);
+    }
+    .radio-bg .pill.no-anim { transition: none; }
+
+    .radio-bg .tuner {
+      position: relative;
+      height: 32px;
+      margin: 0 8px;
+      padding: 4px 6px;
+      border-radius: 8px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .radio-bg .tuner .bar {
+      --lvl: 0.2;
+      flex: none;
+      width: 3px;
+      height: 100%;
+      border-radius: 2px;
+      transform-origin: bottom;
+      transform: scaleY(var(--lvl));
+      transition: --lvl var(--tuner-dur) var(--tuner-ease);
+    }
+
+    .radio-bg .tuner[data-playing="true"] .bar {
+      animation: radio-eq var(--bar-dur, 800ms) var(--eq-ease) infinite alternate;
+      animation-delay: var(--bar-delay, 0ms);
+    }
+
+    @keyframes radio-eq {
+      from { transform: scaleY(calc(var(--lvl) * var(--eq-low))); }
+      to { transform: scaleY(var(--lvl)); }
+    }
+
+    .radio-bg .tuner .needle {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      bottom: 2px;
+      width: 2px;
+      margin-left: -1px;
+      border-radius: 2px;
+      transform: translateX(0);
+      transition: transform var(--tuner-dur) var(--tuner-ease);
+    }
+    .radio-bg .tuner .needle.no-anim { transition: none; }
+
+    .radio-bg .row {
+      --press-scale: 0.99;
+      position: relative;
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 20px;
+      transition: transform var(--press-dur) var(--ease-smooth-out), color var(--press-dur) var(--ease-smooth-out);
+    }
+    .radio-bg .row .f { font-variant-numeric: tabular-nums; transition: color var(--press-dur) var(--ease-smooth-out); }
+    .radio-bg .row:is(:active, .is-pressed) { transform: scale(var(--press-scale)); }
+
+    .radio-bg .t-play-pause { display: inline-grid; place-items: center; width: 24px; height: 24px; flex: none; }
+    .radio-bg .t-play-pause svg { display: block; width: 100%; height: 100%; overflow: visible; }
+    .radio-bg .t-play-pause path { fill: currentColor; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; vector-effect: non-scaling-stroke; transition: d var(--play-pause-dur) var(--play-pause-ease), opacity var(--play-pause-dur) var(--play-pause-ease); }
+    .radio-bg .t-play-pause .t-pp-pl, .radio-bg .t-play-pause .t-pp-pr, .radio-bg .t-play-pause[data-state="pause"] .t-pp-l, .radio-bg .t-play-pause[data-state="pause"] .t-pp-r { opacity: 0; }
+    .radio-bg .t-play-pause[data-state="pause"] .t-pp-pl, .radio-bg .t-play-pause[data-state="pause"] .t-pp-pr { opacity: 1; }
+    @supports (d: path("M0 0")) {
+      .radio-bg .t-play-pause .t-pp-pl, .radio-bg .t-play-pause .t-pp-pr { display: none; }
+      .radio-bg .t-play-pause .t-pp-l { d: path("M6.5 4.5 13 8.25 13 15.75 6.5 19.5Z"); }
+      .radio-bg .t-play-pause .t-pp-r { d: path("M13 8.25 19.5 12 19.5 12 13 15.75Z"); }
+      .radio-bg .t-play-pause[data-state="pause"] .t-pp-l { opacity: 1; d: path("M6.5 5 10 5 10 19 6.5 19Z"); }
+      .radio-bg .t-play-pause[data-state="pause"] .t-pp-r { opacity: 1; d: path("M14 5 17.5 5 17.5 19 14 19Z"); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .radio-bg .tuner .bar, .radio-bg .tuner .needle, .radio-bg .t-text-swap,
+      .radio-bg .pill, .radio-bg .row, .radio-bg .play, .radio-bg .t-play-pause path {
+        animation: none !important;
+        transition: none !important;
+      }
+      .radio-bg .row:is(:active, .is-pressed), .radio-bg .play:is(:active, .is-pressed) { transform: none; }
+    }
+
+    /* THÈME 1 : NÉON GLASS */
+    .theme-neon-glass {
+      background: linear-gradient(145deg, rgba(22, 34, 62, 0.85) 0%, rgba(10, 16, 32, 0.92) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), inset 0 -1px 2px rgba(0, 240, 255, 0.15), 0 0 0 1px rgba(0, 240, 255, 0.28), 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 40px rgba(0, 240, 255, 0.12);
+      color: #f0f7ff;
+    }
+    .theme-neon-glass .radio { background: radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.08) 0%, rgba(8, 13, 26, 0.75) 75%); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12); }
+    .theme-neon-glass .name { color: #f0f7ff; text-shadow: 0 2px 10px rgba(0, 240, 255, 0.2); }
+    .theme-neon-glass .freq { color: #00f0ff; text-shadow: 0 0 14px rgba(0, 240, 255, 0.75); }
+    .theme-neon-glass .play { color: #f0f7ff; background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px rgba(0, 240, 255, 0.45), 0 4px 15px rgba(0, 0, 0, 0.35); }
+    @media (hover: hover) and (pointer: fine) { .theme-neon-glass .play:hover { color: #00f0ff; box-shadow: inset 0 0 0 1px #00f0ff, 0 0 18px rgba(0, 240, 255, 0.45); } }
+    .theme-neon-glass .pill { background: linear-gradient(90deg, rgba(0, 240, 255, 0.22) 0%, rgba(56, 189, 248, 0.08) 100%); box-shadow: inset 0 0 0 1px rgba(0, 240, 255, 0.55), 0 0 16px rgba(0, 240, 255, 0.15); }
+    .theme-neon-glass .tuner { background: rgba(4, 8, 18, 0.75); box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 240, 255, 0.18); }
+    .theme-neon-glass .tuner .bar { background: rgba(240, 247, 255, 0.22); }
+    .theme-neon-glass .tuner[data-playing="true"] .bar { background: linear-gradient(to top, #0284c7, #00f0ff); }
+    .theme-neon-glass .tuner .needle { background: #ffffff; box-shadow: 0 0 8px #ffffff, 0 0 16px #00f0ff; }
+    .theme-neon-glass .row { color: #7e95b8; }
+    .theme-neon-glass .row[aria-checked="true"] { color: #ffffff; }
+    .theme-neon-glass .row .f { color: #647b9c; }
+    .theme-neon-glass .row[aria-checked="true"] .f { color: #00f0ff; font-weight: 600; text-shadow: 0 0 10px rgba(0, 240, 255, 0.6); }
+    @media (hover: hover) and (pointer: fine) { .theme-neon-glass .row:hover { color: #f0f7ff; } }
+    .theme-neon-glass button:focus-visible { outline: 2px solid #00f0ff; outline-offset: 2px; }
+
+    /* THÈME 2 : MODE NUIT OLED */
+    .theme-oled-dark {
+      background: #050505;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.12), 0 24px 60px rgba(0, 0, 0, 0.9);
+      color: #ffffff;
+    }
+    .theme-oled-dark .radio { background: #000000; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); }
+    .theme-oled-dark .name { color: #ffffff; }
+    .theme-oled-dark .freq { color: #10b981; text-shadow: 0 0 12px rgba(16, 185, 129, 0.5); }
+    .theme-oled-dark .play { color: #ffffff; background: #111111; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18); }
+    @media (hover: hover) and (pointer: fine) { .theme-oled-dark .play:hover { color: #10b981; box-shadow: inset 0 0 0 1px #10b981, 0 0 14px rgba(16, 185, 129, 0.3); } }
+    .theme-oled-dark .pill { background: rgba(16, 185, 129, 0.14); box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.45); }
+    .theme-oled-dark .tuner { background: #080808; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08); }
+    .theme-oled-dark .tuner .bar { background: rgba(255, 255, 255, 0.18); }
+    .theme-oled-dark .tuner[data-playing="true"] .bar { background: linear-gradient(to top, #059669, #34d399); }
+    .theme-oled-dark .tuner .needle { background: #ffffff; box-shadow: 0 0 8px #ffffff, 0 0 12px #10b981; }
+    .theme-oled-dark .row { color: #737373; }
+    .theme-oled-dark .row[aria-checked="true"] { color: #ffffff; }
+    .theme-oled-dark .row .f { color: #525252; }
+    .theme-oled-dark .row[aria-checked="true"] .f { color: #10b981; font-weight: 600; }
+    @media (hover: hover) and (pointer: fine) { .theme-oled-dark .row:hover { color: #e5e5e5; } }
+    .theme-oled-dark button:focus-visible { outline: 2px solid #10b981; outline-offset: 2px; }
+
+    /* THÈME 3 : ALUMINIUM BROSSÉ */
+    .theme-brushed-alu {
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, rgba(0,0,0,0.03) 1px, rgba(0,0,0,0.03) 3px), linear-gradient(145deg, #e2e6ec 0%, #c5ccd6 50%, #aeb6c2 100%);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.85), inset 0 -2px 5px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.35), 0 24px 55px rgba(0, 0, 0, 0.5);
+      color: #181a1f;
+    }
+    .theme-brushed-alu .radio { background: linear-gradient(180deg, #eef1f5 0%, #dfe3ea 100%); box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.14), 0 1px 0 rgba(255, 255, 255, 0.75); }
+    .theme-brushed-alu .name { color: #181a1f; }
+    .theme-brushed-alu .freq { color: #ea4315; }
+    .theme-brushed-alu .play { color: #181a1f; background: linear-gradient(145deg, #ffffff, #d5dbe3); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 6px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.12); }
+    @media (hover: hover) and (pointer: fine) { .theme-brushed-alu .play:hover { color: #ea4315; } }
+    .theme-brushed-alu .pill { background: #ffffff; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.08); }
+    .theme-brushed-alu .tuner { background: #1d2026; box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.75), 0 1px 0 rgba(255, 255, 255, 0.8); }
+    .theme-brushed-alu .tuner .bar { background: rgba(255, 255, 255, 0.24); }
+    .theme-brushed-alu .tuner[data-playing="true"] .bar { background: linear-gradient(to top, #ea4315, #ff8a65); }
+    .theme-brushed-alu .tuner .needle { background: #ff5722; box-shadow: 0 0 8px rgba(255, 87, 34, 0.9); }
+    .theme-brushed-alu .row { color: #5c6370; }
+    .theme-brushed-alu .row[aria-checked="true"] { color: #181a1f; font-weight: 600; }
+    .theme-brushed-alu .row .f { color: #7a8291; }
+    .theme-brushed-alu .row[aria-checked="true"] .f { color: #ea4315; font-weight: 700; }
+    @media (hover: hover) and (pointer: fine) { .theme-brushed-alu .row:hover { color: #181a1f; } }
+    .theme-brushed-alu button:focus-visible { outline: 2px solid #ea4315; outline-offset: 2px; }
+
+    /* THÈME 4 : BLEU MARINE & LAITON */
+    .theme-navy-brass {
+      background: radial-gradient(circle at 50% 0%, #14294a 0%, #071120 85%);
+      box-shadow: inset 0 1px 0 0 rgba(212, 175, 55, 0.45), inset 0 -2px 6px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(212, 175, 55, 0.32), 0 20px 50px rgba(0, 0, 0, 0.65);
+      color: #f4f1ea;
+    }
+    .theme-navy-brass .radio { background: linear-gradient(180deg, #0f203a 0%, #0a1628 100%); box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.22), inset 0 1px 0 0 rgba(244, 241, 234, 0.12); }
+    .theme-navy-brass .name { color: #f4f1ea; }
+    .theme-navy-brass .freq { color: #d4af37; text-shadow: 0 0 12px rgba(212, 175, 55, 0.45); }
+    .theme-navy-brass .play { color: #f4f1ea; background: linear-gradient(145deg, #162c4e, #0b182c); box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.48), inset 0 1px 0 rgba(244, 241, 234, 0.15), 0 4px 12px rgba(0, 0, 0, 0.45); }
+    @media (hover: hover) and (pointer: fine) { .theme-navy-brass .play:hover { color: #d4af37; box-shadow: inset 0 0 0 1px #d4af37, 0 0 16px rgba(212, 175, 55, 0.3); } }
+    .theme-navy-brass .pill { background: linear-gradient(90deg, rgba(212, 175, 55, 0.18) 0%, rgba(212, 175, 55, 0.06) 100%); box-shadow: inset 0 0 0 1px rgba(212, 175, 55, 0.55), 0 2px 10px rgba(0, 0, 0, 0.35); }
+    .theme-navy-brass .tuner { background: #060d18; box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(212, 175, 55, 0.18); }
+    .theme-navy-brass .tuner .bar { background: rgba(244, 241, 234, 0.28); }
+    .theme-navy-brass .tuner[data-playing="true"] .bar { background: linear-gradient(to top, #d4af37, #fff7df); }
+    .theme-navy-brass .tuner .needle { background: #ffffff; box-shadow: 0 0 8px #ffffff, 0 0 14px #d4af37; }
+    .theme-navy-brass .row { color: #8899b2; }
+    .theme-navy-brass .row[aria-checked="true"] { color: #f4f1ea; }
+    .theme-navy-brass .row .f { color: #8899b2; }
+    .theme-navy-brass .row[aria-checked="true"] .f { color: #d4af37; font-weight: 600; text-shadow: 0 0 10px rgba(212, 175, 55, 0.45); }
+    @media (hover: hover) and (pointer: fine) { .theme-navy-brass .row:hover { color: #f4f1ea; } }
+    .theme-navy-brass button:focus-visible { outline: 2px solid #d4af37; outline-offset: 2px; }
+
+    /* THÈME 5 : PAPIER E-INK & ENCRE */
+    .theme-e-ink {
+      background: #eae5d9;
+      box-shadow: 0 0 0 1.5px #22201d, 0 18px 40px rgba(0, 0, 0, 0.45);
+      color: #1c1b18;
+    }
+    .theme-e-ink .radio { background: #f5f2eb; box-shadow: inset 0 0 0 1px rgba(28, 27, 24, 0.18); }
+    .theme-e-ink .name { color: #1c1b18; }
+    .theme-e-ink .freq { color: #c83e2b; }
+    .theme-e-ink .play { color: #1c1b18; background: #eae5d9; box-shadow: inset 0 0 0 1.5px #1c1b18; }
+    @media (hover: hover) and (pointer: fine) { .theme-e-ink .play:hover { background: #1c1b18; color: #f5f2eb; } }
+    .theme-e-ink .pill { background: #ffffff; box-shadow: inset 0 0 0 1.5px #1c1b18; }
+    .theme-e-ink .tuner { background: #eae5d9; box-shadow: inset 0 0 0 1px rgba(28, 27, 24, 0.25); }
+    .theme-e-ink .tuner .bar { background: rgba(28, 27, 24, 0.22); }
+    .theme-e-ink .tuner[data-playing="true"] .bar { background: #1c1b18; }
+    .theme-e-ink .tuner .needle { background: #c83e2b; width: 2.5px; }
+    .theme-e-ink .row { color: #635f57; }
+    .theme-e-ink .row[aria-checked="true"] { color: #1c1b18; font-weight: 600; }
+    .theme-e-ink .row .f { color: #7d786e; }
+    .theme-e-ink .row[aria-checked="true"] .f { color: #c83e2b; font-weight: 700; }
+    @media (hover: hover) and (pointer: fine) { .theme-e-ink .row:hover { color: #1c1b18; } }
+    .theme-e-ink button:focus-visible { outline: 2px solid #c83e2b; outline-offset: 2px; }
+
+    /* THÈME 6 : NOYER & AMBRE CHAUD */
+    .theme-walnut-amber {
+      background: repeating-linear-gradient(90deg, rgba(255, 190, 130, 0.03) 0px, rgba(255, 190, 130, 0.03) 2px, rgba(0, 0, 0, 0.08) 2px, rgba(0, 0, 0, 0.08) 6px), linear-gradient(145deg, #3c281c 0%, #2b1d14 55%, #1c120c 100%);
+      box-shadow: inset 0 1px 1px rgba(255, 205, 155, 0.28), inset 0 -2px 6px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 158, 44, 0.22), 0 26px 65px rgba(0, 0, 0, 0.85);
+      color: #f7efe5;
+    }
+    .theme-walnut-amber .radio { background: radial-gradient(circle at 50% 15%, #211914 0%, #16110e 65%, #0f0b09 100%); box-shadow: inset 0 0 0 1px rgba(255, 158, 44, 0.22), inset 0 2px 8px rgba(0, 0, 0, 0.75), 0 1px 0 rgba(255, 205, 155, 0.14); }
+    .theme-walnut-amber .name { color: #f7efe5; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+    .theme-walnut-amber .freq { color: #ff9e2c; text-shadow: 0 0 12px rgba(255, 158, 44, 0.55); }
+    .theme-walnut-amber .play { color: #f7efe5; background: linear-gradient(145deg, #2c211a, #17110d); box-shadow: inset 0 0 0 1px rgba(255, 158, 44, 0.45), inset 0 1px 0 rgba(255, 225, 190, 0.16), 0 4px 12px rgba(0, 0, 0, 0.55); }
+    @media (hover: hover) and (pointer: fine) { .theme-walnut-amber .play:hover { color: #ff9e2c; box-shadow: inset 0 0 0 1px #ff9e2c, 0 0 16px rgba(255, 158, 44, 0.35); } }
+    .theme-walnut-amber .pill { background: linear-gradient(90deg, rgba(255, 158, 44, 0.2) 0%, rgba(255, 123, 0, 0.06) 100%); box-shadow: inset 0 0 0 1px rgba(255, 158, 44, 0.55), 0 2px 12px rgba(0, 0, 0, 0.45); }
+    .theme-walnut-amber .tuner { background: #0d0907; box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 158, 44, 0.2); }
+    .theme-walnut-amber .tuner .bar { background: rgba(247, 239, 229, 0.22); }
+    .theme-walnut-amber .tuner[data-playing="true"] .bar { background: linear-gradient(to top, #ff7b00, #ffd494); }
+    .theme-walnut-amber .tuner .needle { background: #fff9f0; box-shadow: 0 0 8px #fff9f0, 0 0 14px #ff9e2c, 0 0 20px rgba(255, 123, 0, 0.65); }
+    .theme-walnut-amber .row { color: #a69584; }
+    .theme-walnut-amber .row[aria-checked="true"] { color: #f7efe5; }
+    .theme-walnut-amber .row .f { color: #8f7e6e; }
+    .theme-walnut-amber .row[aria-checked="true"] .f { color: #ff9e2c; font-weight: 600; text-shadow: 0 0 10px rgba(255, 158, 44, 0.5); }
+    @media (hover: hover) and (pointer: fine) { .theme-walnut-amber .row:hover { color: #f7efe5; } }
+    .theme-walnut-amber button:focus-visible { outline: 2px solid #ff9e2c; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <a href="#" class="brand">
+      <span class="brand-dot"></span>
+      <span>L'Atelier Fab Design</span>
+    </a>
+    <div class="nav-actions">
+      <a href="#demo" class="btn-ghost">Tester en direct</a>
+      <a href="#contenu-zip" class="btn-ghost">Contenu du pack</a>
+      <a href="#tarif" class="btn-primary">Obtenir le Pack · 9,99 €</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="pill-tag">Édition v1.0 · Code source propre · Audio HTML5 Live</div>
+    <h1>6 Widgets Radio FM Tactiles<br>prêts à intégrer sur vos sites.</h1>
+    <p>Offrez à vos projets Webflow, Framer, WordPress ou React un lecteur Webradio mémorable : aiguille analogique amortie, égaliseur dynamique et commutation de flux audio en direct.</p>
+    <div class="hero-ctas">
+      <a href="#tarif" class="btn-primary">Télécharger le Pack complet (9,99 €)</a>
+      <a href="#demo" class="btn-secondary">Écouter la démo interactive</a>
+    </div>
+    <div class="specs-bar">
+      <span class="spec-chip">Zéro dépendance (HTML/CSS/JS)</span>
+      <span class="spec-chip">Multi-instances isolées</span>
+      <span class="spec-chip">Accessible clavier &amp; ARIA</span>
+      <span class="spec-chip">Licence commerciale illimitée</span>
+    </div>
+  </header>
+
+  <!-- BANC D'ESSAI INTERACTIF DES 6 MODÈLES -->
+  <section class="showcase-section" id="demo">
+    <div class="section-bar">
+      <h2>Banc d'essai interactif — Testez les 6 finitions</h2>
+      <div class="live-hint">
+        <span class="live-dot"></span>
+        <span>Flux réels connectés : cliquez sur Play ou sur une station pour écouter</span>
+      </div>
+    </div>
+
+    <div class="grid">
+
+      <!-- 1. NÉON GLASS -->
+      <article class="card">
+        <div class="stage">
+          <div class="radio-bg theme-neon-glass">
+            <div class="radio" role="group" aria-label="Radio Néon Glass">
+              <div class="head">
+                <div class="meta">
+                  <h2 class="name"><span class="t-text-swap is-soft" data-name>Lofi Club</span></h2>
+                  <p class="freq"><span class="t-text-swap is-soft" data-freq>98.4 FM</span></p>
+                </div>
+                <button type="button" class="play" data-play aria-label="Lecture">
+                  <span class="t-play-pause" data-state="play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path class="t-pp-l" d="M6.5 4.5 13 8.25 13 15.75 6.5 19.5Z"/><path class="t-pp-r" d="M13 8.25 19.5 12 19.5 12 13 15.75Z"/><path class="t-pp-pl" d="M6.5 5 10 5 10 19 6.5 19Z"/><path class="t-pp-pr" d="M14 5 17.5 5 17.5 19 14 19Z"/></svg>
+                  </span>
+                </button>
+              </div>
+              <div class="tuner" data-tuner aria-hidden="true"><span class="needle" data-needle></span></div>
+              <div class="list" role="radiogroup" aria-label="Stations">
+                <span class="pill" data-pill aria-hidden="true"></span>
+                <button type="button" class="row" role="radio" aria-checked="true" data-name="Lofi Club" data-freq="98.4 FM" data-stream="https://ice1.somafm.com/groovesalad-128-mp3"><span>Lofi Club</span><span class="f">98.4</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Nova Jazz" data-freq="101.7 FM" data-stream="https://ice1.somafm.com/sonicuniverse-128-mp3"><span>Nova Jazz</span><span class="f">101.7</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Deep Pulse" data-freq="104.2 FM" data-stream="https://ice1.somafm.com/deepspaceone-128-mp3"><span>Deep Pulse</span><span class="f">104.2</span></button>
+              </div>
+              <audio preload="none" data-audio></audio>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta">
+            <h3>01 · Néon Glass</h3>
+            <p>Verre fumé translucide &amp; cyan électrique</p>
+          </div>
+          <span class="included-badge">Inclus dans le pack</span>
+        </div>
+      </article>
+
+      <!-- 2. MODE NUIT OLED -->
+      <article class="card">
+        <div class="stage">
+          <div class="radio-bg theme-oled-dark">
+            <div class="radio" role="group" aria-label="Radio Mode Nuit OLED">
+              <div class="head">
+                <div class="meta">
+                  <h2 class="name"><span class="t-text-swap is-soft" data-name>Lofi Club</span></h2>
+                  <p class="freq"><span class="t-text-swap is-soft" data-freq>98.4 FM</span></p>
+                </div>
+                <button type="button" class="play" data-play aria-label="Lecture">
+                  <span class="t-play-pause" data-state="play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path class="t-pp-l" d="M6.5 4.5 13 8.25 13 15.75 6.5 19.5Z"/><path class="t-pp-r" d="M13 8.25 19.5 12 19.5 12 13 15.75Z"/><path class="t-pp-pl" d="M6.5 5 10 5 10 19 6.5 19Z"/><path class="t-pp-pr" d="M14 5 17.5 5 17.5 19 14 19Z"/></svg>
+                  </span>
+                </button>
+              </div>
+              <div class="tuner" data-tuner aria-hidden="true"><span class="needle" data-needle></span></div>
+              <div class="list" role="radiogroup" aria-label="Stations">
+                <span class="pill" data-pill aria-hidden="true"></span>
+                <button type="button" class="row" role="radio" aria-checked="true" data-name="Lofi Club" data-freq="98.4 FM" data-stream="https://ice1.somafm.com/groovesalad-128-mp3"><span>Lofi Club</span><span class="f">98.4</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Nova Jazz" data-freq="101.7 FM" data-stream="https://ice1.somafm.com/sonicuniverse-128-mp3"><span>Nova Jazz</span><span class="f">101.7</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Deep Pulse" data-freq="104.2 FM" data-stream="https://ice1.somafm.com/deepspaceone-128-mp3"><span>Deep Pulse</span><span class="f">104.2</span></button>
+              </div>
+              <audio preload="none" data-audio></audio>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta">
+            <h3>02 · Mode Nuit OLED</h3>
+            <p>Noir pur #000 &amp; menthe émeraude</p>
+          </div>
+          <span class="included-badge">Inclus dans le pack</span>
+        </div>
+      </article>
+
+      <!-- 3. ALUMINIUM BROSSÉ -->
+      <article class="card">
+        <div class="stage stage-light">
+          <div class="radio-bg theme-brushed-alu">
+            <div class="radio" role="group" aria-label="Radio Aluminium Brossé">
+              <div class="head">
+                <div class="meta">
+                  <h2 class="name"><span class="t-text-swap is-soft" data-name>Lofi Club</span></h2>
+                  <p class="freq"><span class="t-text-swap is-soft" data-freq>98.4 FM</span></p>
+                </div>
+                <button type="button" class="play" data-play aria-label="Lecture">
+                  <span class="t-play-pause" data-state="play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path class="t-pp-l" d="M6.5 4.5 13 8.25 13 15.75 6.5 19.5Z"/><path class="t-pp-r" d="M13 8.25 19.5 12 19.5 12 13 15.75Z"/><path class="t-pp-pl" d="M6.5 5 10 5 10 19 6.5 19Z"/><path class="t-pp-pr" d="M14 5 17.5 5 17.5 19 14 19Z"/></svg>
+                  </span>
+                </button>
+              </div>
+              <div class="tuner" data-tuner aria-hidden="true"><span class="needle" data-needle></span></div>
+              <div class="list" role="radiogroup" aria-label="Stations">
+                <span class="pill" data-pill aria-hidden="true"></span>
+                <button type="button" class="row" role="radio" aria-checked="true" data-name="Lofi Club" data-freq="98.4 FM" data-stream="https://ice1.somafm.com/groovesalad-128-mp3"><span>Lofi Club</span><span class="f">98.4</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Nova Jazz" data-freq="101.7 FM" data-stream="https://ice1.somafm.com/sonicuniverse-128-mp3"><span>Nova Jazz</span><span class="f">101.7</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Deep Pulse" data-freq="104.2 FM" data-stream="https://ice1.somafm.com/deepspaceone-128-mp3"><span>Deep Pulse</span><span class="f">104.2</span></button>
+              </div>
+              <audio preload="none" data-audio></audio>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta">
+            <h3>03 · Aluminium Brossé</h3>
+            <p>Métal anodisé &amp; orange industriel</p>
+          </div>
+          <span class="included-badge">Inclus dans le pack</span>
+        </div>
+      </article>
+
+      <!-- 4. BLEU MARINE & LAITON -->
+      <article class="card">
+        <div class="stage">
+          <div class="radio-bg theme-navy-brass">
+            <div class="radio" role="group" aria-label="Radio Bleu Marine & Laiton">
+              <div class="head">
+                <div class="meta">
+                  <h2 class="name"><span class="t-text-swap is-soft" data-name>Lofi Club</span></h2>
+                  <p class="freq"><span class="t-text-swap is-soft" data-freq>98.4 FM</span></p>
+                </div>
+                <button type="button" class="play" data-play aria-label="Lecture">
+                  <span class="t-play-pause" data-state="play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path class="t-pp-l" d="M6.5 4.5 13 8.25 13 15.75 6.5 19.5Z"/><path class="t-pp-r" d="M13 8.25 19.5 12 19.5 12 13 15.75Z"/><path class="t-pp-pl" d="M6.5 5 10 5 10 19 6.5 19Z"/><path class="t-pp-pr" d="M14 5 17.5 5 17.5 19 14 19Z"/></svg>
+                  </span>
+                </button>
+              </div>
+              <div class="tuner" data-tuner aria-hidden="true"><span class="needle" data-needle></span></div>
+              <div class="list" role="radiogroup" aria-label="Stations">
+                <span class="pill" data-pill aria-hidden="true"></span>
+                <button type="button" class="row" role="radio" aria-checked="true" data-name="Lofi Club" data-freq="98.4 FM" data-stream="https://ice1.somafm.com/groovesalad-128-mp3"><span>Lofi Club</span><span class="f">98.4</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Nova Jazz" data-freq="101.7 FM" data-stream="https://ice1.somafm.com/sonicuniverse-128-mp3"><span>Nova Jazz</span><span class="f">101.7</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Deep Pulse" data-freq="104.2 FM" data-stream="https://ice1.somafm.com/deepspaceone-128-mp3"><span>Deep Pulse</span><span class="f">104.2</span></button>
+              </div>
+              <audio preload="none" data-audio></audio>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta">
+            <h3>04 · Bleu Marine &amp; Laiton</h3>
+            <p>Instrument nautique &amp; or brossé</p>
+          </div>
+          <span class="included-badge">Inclus dans le pack</span>
+        </div>
+      </article>
+
+      <!-- 5. PAPIER E-INK -->
+      <article class="card">
+        <div class="stage stage-light">
+          <div class="radio-bg theme-e-ink">
+            <div class="radio" role="group" aria-label="Radio Papier E-Ink">
+              <div class="head">
+                <div class="meta">
+                  <h2 class="name"><span class="t-text-swap is-soft" data-name>Lofi Club</span></h2>
+                  <p class="freq"><span class="t-text-swap is-soft" data-freq>98.4 FM</span></p>
+                </div>
+                <button type="button" class="play" data-play aria-label="Lecture">
+                  <span class="t-play-pause" data-state="play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path class="t-pp-l" d="M6.5 4.5 13 8.25 13 15.75 6.5 19.5Z"/><path class="t-pp-r" d="M13 8.25 19.5 12 19.5 12 13 15.75Z"/><path class="t-pp-pl" d="M6.5 5 10 5 10 19 6.5 19Z"/><path class="t-pp-pr" d="M14 5 17.5 5 17.5 19 14 19Z"/></svg>
+                  </span>
+                </button>
+              </div>
+              <div class="tuner" data-tuner aria-hidden="true"><span class="needle" data-needle></span></div>
+              <div class="list" role="radiogroup" aria-label="Stations">
+                <span class="pill" data-pill aria-hidden="true"></span>
+                <button type="button" class="row" role="radio" aria-checked="true" data-name="Lofi Club" data-freq="98.4 FM" data-stream="https://ice1.somafm.com/groovesalad-128-mp3"><span>Lofi Club</span><span class="f">98.4</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Nova Jazz" data-freq="101.7 FM" data-stream="https://ice1.somafm.com/sonicuniverse-128-mp3"><span>Nova Jazz</span><span class="f">101.7</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Deep Pulse" data-freq="104.2 FM" data-stream="https://ice1.somafm.com/deepspaceone-128-mp3"><span>Deep Pulse</span><span class="f">104.2</span></button>
+              </div>
+              <audio preload="none" data-audio></audio>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta">
+            <h3>05 · Papier E-Ink &amp; Encre</h3>
+            <p>Liseuse mate &amp; encre vermillon</p>
+          </div>
+          <span class="included-badge">Inclus dans le pack</span>
+        </div>
+      </article>
+
+      <!-- 6. NOYER & AMBRE CHAUD -->
+      <article class="card">
+        <div class="stage">
+          <div class="radio-bg theme-walnut-amber">
+            <div class="radio" role="group" aria-label="Radio Noyer & Ambre Chaud">
+              <div class="head">
+                <div class="meta">
+                  <h2 class="name"><span class="t-text-swap is-soft" data-name>Lofi Club</span></h2>
+                  <p class="freq"><span class="t-text-swap is-soft" data-freq>98.4 FM</span></p>
+                </div>
+                <button type="button" class="play" data-play aria-label="Lecture">
+                  <span class="t-play-pause" data-state="play" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path class="t-pp-l" d="M6.5 4.5 13 8.25 13 15.75 6.5 19.5Z"/><path class="t-pp-r" d="M13 8.25 19.5 12 19.5 12 13 15.75Z"/><path class="t-pp-pl" d="M6.5 5 10 5 10 19 6.5 19Z"/><path class="t-pp-pr" d="M14 5 17.5 5 17.5 19 14 19Z"/></svg>
+                  </span>
+                </button>
+              </div>
+              <div class="tuner" data-tuner aria-hidden="true"><span class="needle" data-needle></span></div>
+              <div class="list" role="radiogroup" aria-label="Stations">
+                <span class="pill" data-pill aria-hidden="true"></span>
+                <button type="button" class="row" role="radio" aria-checked="true" data-name="Lofi Club" data-freq="98.4 FM" data-stream="https://ice1.somafm.com/groovesalad-128-mp3"><span>Lofi Club</span><span class="f">98.4</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Nova Jazz" data-freq="101.7 FM" data-stream="https://ice1.somafm.com/sonicuniverse-128-mp3"><span>Nova Jazz</span><span class="f">101.7</span></button>
+                <button type="button" class="row" role="radio" aria-checked="false" data-name="Deep Pulse" data-freq="104.2 FM" data-stream="https://ice1.somafm.com/deepspaceone-128-mp3"><span>Deep Pulse</span><span class="f">104.2</span></button>
+              </div>
+              <audio preload="none" data-audio></audio>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta">
+            <h3>06 · Noyer &amp; Ambre Chaud</h3>
+            <p>Bois texturé &amp; lueur tungstène</p>
+          </div>
+          <span class="included-badge">Inclus dans le pack</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- CONTENU EXACT DU .ZIP + BLOC TARIFAIRE -->
+  <section class="offer-section" id="contenu-zip">
+    <div class="zip-card">
+      <h2>Ce que contient exactement l'archive .ZIP</h2>
+      <p>Tout est structuré, commenté et prêt à glisser dans vos projets sans configuration complexe ni librairie externe.</p>
+
+      <div class="zip-tree" aria-label="Arborescence des fichiers inclus">
+        <div><span class="folder">📦 fm-tactile-radio-pack-v1.zip</span></div>
+        <div>├── <span class="file">01-neon-glass.html</span> <span class="note">· Fichier autonome prêt à l'emploi</span></div>
+        <div>├── <span class="file">02-mode-nuit-oled.html</span> <span class="note">· Fichier autonome prêt à l'emploi</span></div>
+        <div>├── <span class="file">03-aluminium-brosse.html</span> <span class="note">· Fichier autonome prêt à l'emploi</span></div>
+        <div>├── <span class="file">04-bleu-marine-laiton.html</span> <span class="note">· Fichier autonome prêt à l'emploi</span></div>
+        <div>├── <span class="file">05-papier-e-ink.html</span> <span class="note">· Fichier autonome prêt à l'emploi</span></div>
+        <div>├── <span class="file">06-noyer-ambre-chaud.html</span> <span class="note">· Fichier autonome prêt à l'emploi</span></div>
+        <div>├── <span class="folder">📁 modular/</span> <span class="note">· Version séparée (radio-core.css, themes.css, radio.js)</span></div>
+        <div>├── <span class="file">GUIDE-INTEGRATION.md</span> <span class="note">· Webflow, Framer, WordPress, React</span></div>
+        <div>└── <span class="file">LICENCE-COMMERCIALE.txt</span> <span class="note">· Usage illimité projets clients</span></div>
+      </div>
+
+      <ul class="features-list">
+        <li>Programmation via 3 attributs HTML</li>
+        <li>Aiguille FM calibrée sur la fréquence</li>
+        <li>Égaliseur animé à 30 barres CSS</li>
+        <li>Auto-pause entre plusieurs lecteurs</li>
+        <li>Support clavier &amp; lecteurs d'écran</li>
+        <li>Poids plume (~18 Ko non compressé)</li>
+      </ul>
+    </div>
+
+    <aside class="pricing-card" id="tarif">
+      <div>
+        <span class="pricing-badge">Pack Complet · 6 Thèmes</span>
+        <h3>FM Tactile Radio UI</h3>
+        <p class="pricing-sub">Accès immédiat au code source complet + mises à jour gratuites.</p>
+
+        <div class="price-row">
+          <span class="price-amount">9,99 €</span>
+        </div>
+        <p class="price-tax">Paiement unique · Aucun abonnement</p>
+
+        <ul class="pricing-perks">
+          <li>Les <strong>6 finitions</strong> en fichiers HTML autonomes</li>
+          <li>La version modulaire <strong>CSS + JS séparés</strong></li>
+          <li><strong>Licence commerciale illimitée</strong> (sites persos &amp; clients)</li>
+          <li>Guide de personnalisation des flux MP3 / AAC / Podcasts</li>
+        </ul>
+      </div>
+
+      <div>
+        <!-- Remplacez le href="#" par votre URL produit Gumroad ou Lemon Squeezy -->
+        <a href="#" class="btn-primary btn-buy-full" id="checkout-button">Acheter et télécharger le .ZIP — 9,99 €</a>
+        <p class="guarantee-note">Téléchargement instantané après paiement sécurisé</p>
+      </div>
+    </aside>
+  </section>
+
+  <!-- FAQ RAPIDE POUR LEVER LES FREINS -->
+  <section class="faq-section">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h3>Comment ajouter mes propres radios ?</h3>
+        <p>Il suffit de modifier trois attributs sur chaque bouton de station : le nom, la fréquence FM (qui place automatiquement l'aiguille) et l'URL directe de votre flux MP3/AAC ou fichier podcast.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Est-ce compatible avec Webflow, Framer ou WordPress ?</h3>
+        <p>Oui. Chaque modèle fonctionne sans aucune dépendance externe : un simple bloc « Custom Code / HTML personnalisé » suffit pour l'intégrer sur n'importe quel CMS ou site React/Vue.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Puis-je l'utiliser sur des sites clients ?</h3>
+        <p>Oui, la licence incluse vous autorise à intégrer ces widgets sur un nombre illimité de projets personnels et commerciaux pour vos clients, sans redevance supplémentaire.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 L'Atelier Fab Design — Pack Widgets Radio FM Tactiles</span>
+    <span>HTML5 · CSS3 · Vanilla JS</span>
+  </footer>
+
+  <script>
+    (function () {
+      if (window.__radioWidgetInit) return;
+      window.__radioWidgetInit = true;
+
+      var widgets = Array.prototype.slice.call(document.querySelectorAll('.radio'));
+      var instances = [];
+
+      widgets.forEach(function (root) {
+        var rows = Array.prototype.slice.call(root.querySelectorAll('.row'));
+        var pill = root.querySelector('[data-pill]');
+        var play = root.querySelector('[data-play]');
+        var icon = root.querySelector('.t-play-pause');
+        var nameEl = root.querySelector('[data-name]');
+        var freqEl = root.querySelector('[data-freq]');
+        var tuner = root.querySelector('[data-tuner]');
+        var needle = root.querySelector('[data-needle]');
+        var audio = root.querySelector('[data-audio]');
+        var swapMs = parseFloat(getComputedStyle(root).getPropertyValue('--text-swap-dur')) || 150;
+
+        var current = 0, playing = false;
+        var bars = [], N = 30;
+
+        for (var b = 0; b < N; b++) {
+          var s = document.createElement('span');
+          s.className = 'bar';
+          s.style.setProperty('--bar-dur', (500 + (b * 53) % 400) + 'ms');
+          s.style.setProperty('--bar-delay', (-((b * 137) % 800)) + 'ms');
+          tuner.insertBefore(s, needle);
+          bars.push(s);
+        }
+
+        function tune(i, instant) {
+          var f = parseFloat(rows[i].dataset.freq);
+          var p = Math.max(0, Math.min(1, (f - 96) / 12));
+          bars.forEach(function (bar, k) {
+            var prox = Math.max(0, 1 - Math.abs((k + 0.5) / N - p) / 0.25);
+            bar.style.setProperty('--lvl', (0.18 + 0.82 * prox * prox).toFixed(3));
+          });
+          if (instant) needle.classList.add('no-anim');
+          needle.style.transform = 'translateX(' + (p * tuner.offsetWidth) + 'px)';
+          if (instant) { void needle.offsetHeight; needle.classList.remove('no-anim'); }
+        }
+
+        function place(i, instant) {
+          if (instant) pill.classList.add('no-anim');
+          pill.style.transform = 'translateY(' + (rows[i].offsetTop) + 'px)';
+          if (instant) { void pill.offsetHeight; pill.classList.remove('no-anim'); }
+        }
+
+        function swap(el, next) {
+          if (el.textContent === next) return;
+          el.classList.add('is-exit');
+          setTimeout(function () {
+            el.textContent = next;
+            el.classList.remove('is-exit');
+            el.classList.add('is-enter-start');
+            void el.offsetHeight;
+            el.classList.remove('is-enter-start');
+          }, swapMs);
+        }
+
+        function syncUI(v) {
+          playing = v;
+          tuner.setAttribute('data-playing', v ? 'true' : 'false');
+          icon.setAttribute('data-state', v ? 'pause' : 'play');
+          play.setAttribute('aria-label', v ? 'Pause' : 'Lecture');
+          if (!v) play.classList.remove('is-loading');
+        }
+
+        function loadAndPlay(index) {
+          var url = rows[index].dataset.stream;
+          if (!url) return;
+
+          instances.forEach(function (inst) {
+            if (inst !== api) inst.pause();
+          });
+
+          play.classList.add('is-loading');
+          syncUI(true);
+
+          if (audio.src !== url) {
+            audio.src = url;
+          }
+          var promise = audio.play();
+          if (promise !== undefined) {
+            promise.then(function () {
+              play.classList.remove('is-loading');
+            }).catch(function () {
+              syncUI(false);
+            });
+          }
+        }
+
+        function stopAudio() {
+          syncUI(false);
+          audio.pause();
+          audio.removeAttribute('src');
+          audio.load();
+        }
+
+        function setPlaying(v) {
+          if (v) {
+            loadAndPlay(current);
+          } else {
+            stopAudio();
+          }
+        }
+
+        function select(i) {
+          if (i === current) {
+            if (!playing) setPlaying(true);
+            return;
+          }
+          current = i;
+          rows.forEach(function (r, k) {
+            r.setAttribute('aria-checked', k === i ? 'true' : 'false');
+            r.tabIndex = k === i ? 0 : -1;
+          });
+          place(i, false);
+          tune(i, false);
+          swap(nameEl, rows[i].dataset.name);
+          swap(freqEl, rows[i].dataset.freq);
+          loadAndPlay(i);
+        }
+
+        audio.addEventListener('playing', function () { play.classList.remove('is-loading'); });
+        audio.addEventListener('waiting', function () { if (playing) play.classList.add('is-loading'); });
+        audio.addEventListener('error', function () { syncUI(false); });
+
+        rows.forEach(function (r, k) {
+          r.tabIndex = k === 0 ? 0 : -1;
+          r.addEventListener('click', function () { select(k); });
+          r.addEventListener('keydown', function (e) {
+            var d = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
+            if (!d) return;
+            e.preventDefault();
+            var n = (k + d + rows.length) % rows.length;
+            select(n);
+            rows[n].focus();
+          });
+        });
+
+        play.addEventListener('click', function () { setPlaying(!playing); });
+        place(0, true);
+        tune(0, true);
+        window.addEventListener('load', function () { place(current, true); tune(current, true); });
+        window.addEventListener('resize', function () { place(current, true); tune(current, true); });
+
+        var api = { pause: stopAudio };
+        instances.push(api);
+      });
+
+      // Retour tactile mobile
+      var min = 150;
+      document.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse') return;
+        var el = e.target && e.target.closest && e.target.closest('.radio-bg button');
+        if (!el || el.disabled) return;
+        var t0 = performance.now();
+        clearTimeout(el._tPress);
+        el.classList.add('is-pressed');
+        function up() {
+          document.removeEventListener('pointerup', up, true);
+          document.removeEventListener('pointercancel', up, true);
+          el._tPress = setTimeout(function () { el.classList.remove('is-pressed'); }, Math.max(0, min - (performance.now() - t0)));
+        }
+        document.addEventListener('pointerup', up, true);
+        document.addEventListener('pointercancel', up, true);
+      }, { passive: true });
+    })();
+  </script>
+
+</body>
+</html>

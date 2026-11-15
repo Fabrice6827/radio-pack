@@ -1,0 +1,30 @@
+================================================================================
+LICENCE COMMERCIALE ILLIMITÉE — FM TACTILE RADIO UI (v1.0)
+Éditeur : L'Atelier Fab Design
+================================================================================
+
+1. OCTROI DE LICENCE
+L'acquisition de ce pack vous accorde une licence non exclusive, mondiale et
+perpétuelle vous autorisant à utiliser, modifier et intégrer les fichiers sources
+(HTML, CSS, JavaScript) dans un nombre illimité de projets personnels et
+commerciaux, y compris pour des sites web, applications ou produits réalisés
+pour le compte de vos clients.
+
+2. CE QUI EST AUTORISÉ
+- Intégrer les widgets sur un nombre illimité de sites web personnels ou clients.
+- Modifier les couleurs, polices, dimensions, animations et flux audio.
+- Inclure le composant compilé au sein d'un site ou d'une application livrée à un client.
+
+3. CE QUI N'EST PAS AUTORISÉ
+- Revendre, redistribuer, sous-licencier ou partager gratuitement l'archive .ZIP
+  ou les fichiers sources bruts en tant que pack de composants, template ou ressource
+  téléchargeable autonome.
+- Publier le code source complet sur un dépôt public (GitHub, CodePen public, etc.)
+  permettant à des tiers de le télécharger sans licence.
+
+4. GARANTIE & RESPONSABILITÉ
+Le logiciel est fourni « en l'état ». Les flux audio de démonstration inclus
+(SomaFM) sont fournis à titre d'exemple ; il appartient à l'intégrateur de
+renseigner des flux audio pour lesquels il dispose des droits de diffusion.
+
+© 2026 L'Atelier Fab Design. Tous droits réservés.

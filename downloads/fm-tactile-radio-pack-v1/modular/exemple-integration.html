@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exemple Modulaire — FM Tactile Radio UI</title>
+  <link rel="stylesheet" href="radio-core.css">
+  <link rel="stylesheet" href="themes.css">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #090b10;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      padding: 40px 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Exemple d'utilisation modulaire avec deux thèmes sur la même page -->
+<!-- DÉBUT DU WIDGET RADIO (01 · Néon Glass) -->
+<div class="radio-bg theme-neon-glass">
+  <div class="radio" role="group" aria-label="Radio 01 · Néon Glass">
+    <div class="head">
+      <div class="meta">
+        <h2 class="name"><span class="t-text-swap is-soft" data-name>Lofi Club</span></h2>
+        <p class="freq"><span class="t-text-swap is-soft" data-freq>98.4 FM</span></p>
+      </div>
+      <button type="button" class="play" data-play aria-label="Lecture">
+        <span class="t-play-pause" data-state="play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path class="t-pp-l" d="M6.5 4.5 13 8.25 13 15.75 6.5 19.5Z"/>
+            <path class="t-pp-r" d="M13 8.25 19.5 12 19.5 12 13 15.75Z"/>
+            <path class="t-pp-pl" d="M6.5 5 10 5 10 19 6.5 19Z"/>
+            <path class="t-pp-pr" d="M14 5 17.5 5 17.5 19 14 19Z"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    <div class="tuner" data-tuner aria-hidden="true">
+      <span class="needle" data-needle></span>
+    </div>
+
+    <div class="list" role="radiogroup" aria-label="Stations">
+      <span class="pill" data-pill aria-hidden="true"></span>
+      <button type="button" class="row" role="radio" aria-checked="true" data-name="Lofi Club" data-freq="98.4 FM" data-stream="https://ice1.somafm.com/groovesalad-128-mp3">
+        <span>Lofi Club</span><span class="f">98.4</span>
+      </button>
+      <button type="button" class="row" role="radio" aria-checked="false" data-name="Nova Jazz" data-freq="101.7 FM" data-stream="https://ice1.somafm.com/sonicuniverse-128-mp3">
+        <span>Nova Jazz</span><span class="f">101.7</span>
+      </button>
+      <button type="button" class="row" role="radio" aria-checked="false" data-name="Deep Pulse" data-freq="104.2 FM" data-stream="https://ice1.somafm.com/deepspaceone-128-mp3">
+        <span>Deep Pulse</span><span class="f">104.2</span>
+      </button>
+    </div>
+
+    <audio preload="none" data-audio></audio>
+  </div>
+</div>
+<!-- FIN DU WIDGET RADIO -->
+
+<!-- DÉBUT DU WIDGET RADIO (06 · Noyer & Ambre Chaud) -->
+<div class="radio-bg theme-walnut-amber">
+  <div class="radio" role="group" aria-label="Radio 06 · Noyer & Ambre Chaud">
+    <div class="head">
+      <div class="meta">
+        <h2 class="name"><span class="t-text-swap is-soft" data-name>Lofi Club</span></h2>
+        <p class="freq"><span class="t-text-swap is-soft" data-freq>98.4 FM</span></p>
+      </div>
+      <button type="button" class="play" data-play aria-label="Lecture">
+        <span class="t-play-pause" data-state="play" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path class="t-pp-l" d="M6.5 4.5 13 8.25 13 15.75 6.5 19.5Z"/>
+            <path class="t-pp-r" d="M13 8.25 19.5 12 19.5 12 13 15.75Z"/>
+            <path class="t-pp-pl" d="M6.5 5 10 5 10 19 6.5 19Z"/>
+            <path class="t-pp-pr" d="M14 5 17.5 5 17.5 19 14 19Z"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    <div class="tuner" data-tuner aria-hidden="true">
+      <span class="needle" data-needle></span>
+    </div>
+
+    <div class="list" role="radiogroup" aria-label="Stations">
+      <span class="pill" data-pill aria-hidden="true"></span>
+      <button type="button" class="row" role="radio" aria-checked="true" data-name="Lofi Club" data-freq="98.4 FM" data-stream="https://ice1.somafm.com/groovesalad-128-mp3">
+        <span>Lofi Club</span><span class="f">98.4</span>
+      </button>
+      <button type="button" class="row" role="radio" aria-checked="false" data-name="Nova Jazz" data-freq="101.7 FM" data-stream="https://ice1.somafm.com/sonicuniverse-128-mp3">
+        <span>Nova Jazz</span><span class="f">101.7</span>
+      </button>
+      <button type="button" class="row" role="radio" aria-checked="false" data-name="Deep Pulse" data-freq="104.2 FM" data-stream="https://ice1.somafm.com/deepspaceone-128-mp3">
+        <span>Deep Pulse</span><span class="f">104.2</span>
+      </button>
+    </div>
+
+    <audio preload="none" data-audio></audio>
+  </div>
+</div>
+<!-- FIN DU WIDGET RADIO -->
+
+  <script src="radio.js"></script>
+</body>
+</html>
